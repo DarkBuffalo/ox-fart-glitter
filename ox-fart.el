@@ -42,10 +42,11 @@
 
 (add-to-list 'org-latex-classes
              '("fart"                          ;class-name
-               "\\documentclass[twoside,headinclude,footinclude,BCOR=5mm]{scrartcl}
+               "\\documentclass[twoside,headinclude,footinclude,BCOR=5mm,headings=standardclasses,headings=big]{scrartcl}
 
 \\usepackage{concmath}
 \\renewcommand*\\familydefault{\\ttdefault} %% Only if the base font of the document is to be typewriter style
+
 \\RequirePackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
 
@@ -537,7 +538,7 @@ headheight=\\baselineskip]{geometry}
       & \\raisebox{-1cm}{\\begin{sideways}\\parbox{2cm}{\\raggedright\\@labeltext\\@presentlabel}\\end{sideways}}
       & \\raisebox{-1cm}{\\begin{sideways}\\parbox{2cm}{\\raggedright\\@labeltext\\@absentlabel}\\end{sideways}}
       & \\raisebox{-1cm}{\\begin{sideways}\\parbox{2cm}{\\raggedright\\@labeltext\\@excusedlabel}\\end{sideways}}\\\\
-    \\rowcolor{mdlightgrey} \\multicolumn{5}{@{}c@{}}{\\@separator}\\\\
+    \\rowcolor{white} \\multicolumn{5}{@{}c@{}}{\\@separator}\\\\
     \\rowcolor{white} \\@labeltext \\@participantslabel\\\\
     \\@participantstable
   \\end{tabularx}
