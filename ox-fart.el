@@ -42,14 +42,15 @@
 
 (add-to-list 'org-latex-classes
              '("fart"                          ;class-name
-               "\\documentclass[twoside]{scrartcl}
+               "\\documentclass[twoside,headinclude,footinclude,BCOR=5mm]{scrartcl}
 
 \\usepackage{concmath}
 \\renewcommand*\\familydefault{\\ttdefault} %% Only if the base font of the document is to be typewriter style
 \\RequirePackage[T1]{fontenc}
+\\usepackage[utf8]{inputenc}
 
 \\RequirePackage[french]{babel}
-
+\\RequirePackage{setspace}              %%pour le titre
 \\RequirePackage{graphicx}	        %% gestion des images
 \\RequirePackage[dvipsnames,table]{xcolor}	%% gestion des couleurs
 \\RequirePackage{array}		%% gestion améliorée des tableaux
@@ -57,6 +58,11 @@
 \\RequirePackage{enumitem}	        %% pour les listes numérotées
 \\RequirePackage[footnote]{snotez}	%% placer les notes de pied de page sur le coté
 \\RequirePackage{dashrule}
+
+\\RequirePackage{amsmath,
+	amssymb,
+	amsthm} 			%% For including math equations, theorems, symbols, etc
+\\RequirePackage[toc]{multitoc}
 
 \\RequirePackage{everysel}
 \\EverySelectfont{%%
@@ -71,30 +77,30 @@
 \\usepackage[a4paper,left=15mm,
 top=15mm,headsep=2\\baselineskip,
 textwidth=132mm,marginparsep=8mm,
-marginparwidth=40mm,textheight=49\\baselineskip,
+marginparwidth=40mm,textheight=51\\baselineskip,
 headheight=\\baselineskip]{geometry}
 
 \\definecolor{halfgray}{gray}{0.75}
 
-%%----------------------------------------------------------------------------------------
+%%------------------------------------------------------------------------------
 %%	HEADERS
-%%----------------------------------------------------------------------------------------
+%%------------------------------------------------------------------------------
 
 \\renewcommand{\\sectionmark}[1]{\\markright{\\spacedlowsmallcaps{#1}}} %% The header for all pages (oneside) or for even pages (twoside)
-%%\\renewcommand{\\subsectionmark}[1]{\\markright{\\thesubsection~#1}} %% Uncomment when using the twoside option - this modifies the header on odd pages
-\\lehead{\\mbox{\\llap{\\small\\thepage\\kern1em\\color{halfgray} \\vline}\\color{halfgray}\\hspace{0.5em}\\rightmark\\hfil}} %% The header style
+\\renewcommand{\\subsectionmark}[1]{\\markright{\\thesubsection~#1}} %% Uncomment when using the twoside option - this modifies the header on odd pages
+%%\\lehead{\\mbox{\\llap{\\small\\thepage\\kern1em\\color{halfgray} \\vline}\\color{halfgray}\\hspace{0.5em}\\rightmark\\hfil}} %% The header style
 
 \\PassOptionsToPackage{protrusion=true,final}{microtype}
 
 \\newenvironment{fullpage}
     {\\skip\\noindent\\begin{minipage}
     {\\textwidth+\\marginparwidth+\\marginparsep}\\skip\\smallskip}
-    {\\end{minipage}\\vspace{.1in}}
+    {\\end{minipage}\\vspace{0.2mm}}
 
 \\makeatletter
 
 
-%% COLOR %<--------------------------------------------------------->%
+%% COLOR %<------------------------------------------------------------------->%
 
 %% Main colour
 \\definecolor{mdblue}{HTML}{003C65}
@@ -111,7 +117,7 @@ headheight=\\baselineskip]{geometry}
 \\colorlet{mdlightgray}{mdlightgrey}
 
 
-%% DOC %<----------------------------------------------------------->%
+%% DOC %<--------------------------------------------------------------------->%
 
 % Whether the language is English;
 % defaults to true
@@ -133,7 +139,7 @@ headheight=\\baselineskip]{geometry}
 }
 
 
-%% LABEL %<-------------------------------------------------------->%
+%% LABEL %<------------------------------------------------------------------->%
 %% Standard style for labels, small and bold
 \\newcommand{\\@labeltext}{\\large\\scshape}
 
@@ -397,9 +403,6 @@ headheight=\\baselineskip]{geometry}
 \\newcommand*{\\@statusdate}{Set with \\texttt{\\textbackslash statusdate\\{\\}}}
 \\newcommand*{\\statusdate}{\\renewcommand*{\\@statusdate}}
 
-\\newcommand*{\\@subtitle}{Set with \\texttt{\\textbackslash subtitle\\{\\}}}
-\\newcommand*{\\subtitle}{\\renewcommand*{\\@subtitle}}
-
 \\newcommand*{\\@summaryclassificationlabel}
             {\\FrenchEnglish{CLASSIFICATION THIS PAGE}{GRADERING DENNE SIDE}}
 
@@ -428,10 +431,8 @@ headheight=\\baselineskip]{geometry}
 \\newcommand*{\\@yourref}{Set with \\texttt{\\textbackslash yourref\\{\\}}}
 \\newcommand*{\\yourref}{\\renewcommand*{\\@yourref}}
 
-
 %% MINUTES %<------------------------------------------------------->%
 
-%%\\DeclareOption*{\\PassOptionsToClass{\\CurrentOption}{sintefdoc}}
 \\ProcessOptions\\relax
 
 \\PassOptionsToPackage{table}{xcolor}
@@ -525,7 +526,7 @@ headheight=\\baselineskip]{geometry}
    \\@rlogo
   \\end{minipage}
 
-  \\vspace{4ex}%%
+  \\vspace{1ex}%%
   \\noindent%%
   \\@separator\\\\
   \\rowcolors{4}{}{mdlightgray}
@@ -536,7 +537,7 @@ headheight=\\baselineskip]{geometry}
       & \\raisebox{-1cm}{\\begin{sideways}\\parbox{2cm}{\\raggedright\\@labeltext\\@presentlabel}\\end{sideways}}
       & \\raisebox{-1cm}{\\begin{sideways}\\parbox{2cm}{\\raggedright\\@labeltext\\@absentlabel}\\end{sideways}}
       & \\raisebox{-1cm}{\\begin{sideways}\\parbox{2cm}{\\raggedright\\@labeltext\\@excusedlabel}\\end{sideways}}\\\\
-    \\rowcolor{white} \\multicolumn{5}{@{}c@{}}{\\@separator}\\\\
+    \\rowcolor{mdlightgrey} \\multicolumn{5}{@{}c@{}}{\\@separator}\\\\
     \\rowcolor{white} \\@labeltext \\@participantslabel\\\\
     \\@participantstable
   \\end{tabularx}
