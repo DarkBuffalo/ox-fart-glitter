@@ -1,0 +1,162 @@
+#+title:OX-REPORT
+#+author: Matthias David
+
+#+attr_latex: :width 150px
+[[file:img/report.png]]
+
+#+caption: Export
+#+attr_latex: :width 300px
+[[file:img/ox-report.gif]]
+
+-----
+
+* INSTALLATION
+If you use =use-package=, you can do the below instead:
+
+#+BEGIN_SRC emacs-lisp
+(use-package ox-report
+  :load-path "~/Dropbox/emacs/lib/ox-report")
+#+END_SRC
+
+If you use Doom Emacs
+#+BEGIN_SRC emacs-lisp
+(package! ox-report
+  :recipe (:host github :repo "DarkBuffalo/ox-report"))
+#+END_SRC
+
+* PREREQUISITES
+** Linux
++ Texlive :: =sudo apt install texlive texlive-extra texlive-fonts-extra=
++ Latex package
+  - titling
+  - enumitem
+  - snotez
+  - pgfopts
+  - pgf
+  - marginnote
+  - xpatch
+  - classicthesis
+  - bera
+  - eulervm
+  - mparhack
+  - titlesec
+  - tocloft ??
+  - arsclassica
+  - tcolorbox
+  - environ
+  - trimspaces
+  - ncctools
+  - lastpage
+  - wrapfig
+  - amsmath
+  - capt-of
+  - bigfoot
+  - iwona
+  - babel
+  - babel-french
+
+* USAGE
+- =C-c C-e r o= :: Export as PDF and Open
+
+
+* CONFIGURATION
+To configure the export we use the header of the org file
+** standard
+#+BEGIN_SRC org
+#+title:Readme ox-report
+#+author: Matthias David
+#+options: toc:nil
+#+END_SRC
+** With toc
+#+BEGIN_SRC org
+#+options: toc:1
+#+END_SRC
+
+#+caption: Table of Content
+#+attr_latex: :width 300px
+[[file:img/toc.png]]
+
+** Place and date of the meeting
+#+BEGIN_SRC org
+#+ou:Zoom
+#+quand: 20/2/2021
+#+END_SRC
+
+** Project concerning the meeting
+#+BEGIN_SRC org
+#+projet: ox-minutes
+#+END_SRC
+
+** Absent, present or excused
+it is necessary to separate the names by commas for a good formatting
+#+BEGIN_SRC org
+#+absent: C. Robert,T. tartanpion
+#+present: K. Soulet,I. Payet
+#+excuse:Sophie Fonsec,Karine Soulet
+#+END_SRC
+
+** Use Yasnippet
+#+BEGIN_SRC org
+# -*- mode: snippet -*-
+# name: report
+# uuid:
+# key: report
+# condition: t
+# --
+#+title: ${1:Titre}
+#+author: ${2:Auteur}
+#+options: toc:nil
+#+ou: ${3:Ou}
+#+quand: ${4:Date}
+#+present: ${5:Sophie Fonsec}
+#+initiateur: ${6:Matthias DAVID}
+#+projet: ${7:Secret project}
+#+dure: ${8:2H}
+#+logo: logo.png
+#+END_SRC
+
+* SCREENSHOT
+
+#+caption: Header of pdf
+#+attr_latex: :width 300px
+[[file:img/header.png]]
+
+
+* TODOS
+
+- [ ] Add: English
+- [ ] Fix: Timebox
+- [ ] Fix: Multitoc error
+- [X] Add: logo
+- [X] Ajouter le choix de la Toc par options dans ox-notes
+- [X] Ajouter le tableau de présence en intro
+- [X] Ajouter la function fullwidth
+
+
+* CHANGELOG
+** v0.2
+*** Features
+- ADD: Possibility to put and choose a logo
+** v0.1 <08.2020>
+*** Features
+- ADD:Layout like 'Tufte'
+- ADD:two columns toc
+- ADD:margin notes replace footnote
+- ADD:table as possible on notes
+- ADD:timebox
+- ADD:fullpage margin
+
+* CONTRIBUTING
+
+1. Fork it (<https://github.com/DarkBuffalo/ox-report/fork>)
+2. Create your feature branch (`git checkout -b feature/fooBar`)
+3. Commit your changes (`git commit -am 'Add some fooBar'`)
+4. Push to the branch (`git push origin feature/fooBar`)
+5. Create a new Pull Request
+
+
+* LICENSE
+GPLv3.
+
+* THANKS
+-  Clemens Radermacher [[https://github.com/clemera][@clamera]] for [[https://www.reddit.com/r/emacs/comments/i7279y/emacs_lisp_error_noob/][help]]
