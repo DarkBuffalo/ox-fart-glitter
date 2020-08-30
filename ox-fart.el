@@ -42,37 +42,39 @@
 
 (add-to-list 'org-latex-classes
              '("fart"                          ;class-name
-               "\\documentclass[paper=a4,ms]{memoir}
-%%\\RequirePackage[utf8]{inputenc}
-%%\\RequirePackage[T1]{fontenc}
+               "\\documentclass[twoside]{scrartcl}
+
+\\usepackage{concmath}
+\\renewcommand*\\familydefault{\\ttdefault} %% Only if the base font of the document is to be typewriter style
+\\RequirePackage[T1]{fontenc}
+
 \\RequirePackage[french]{babel}
-\\RequirePackage{setspace}              %%pour le titre
+
 \\RequirePackage{graphicx}	        %% gestion des images
 \\RequirePackage[dvipsnames,table]{xcolor}	%% gestion des couleurs
 \\RequirePackage{array}		%% gestion améliorée des tableaux
 \\RequirePackage{calc}		        %% syntaxe naturelle pour les calculs
-
 \\RequirePackage{enumitem}	        %% pour les listes numérotées
 \\RequirePackage[footnote]{snotez}	%% placer les notes de pied de page sur le coté
-\\chapterstyle{dash} %% try also reparticle
-\\RequirePackage{ulem}   %% underline
+\\RequirePackage{dashrule}
 
-\\RequirePackage{amsmath,
-	amssymb,
-	amsthm} 			%% For including math equations, theorems, symbols, etc
-\\RequirePackage[toc]{multitoc}
-
-\\RequirePackage[top=1cm,
-bottom=2.5cm,
-left=30pt,
-textwidth=417pt,
-headheight=14pt,
-marginparsep=20pt,
-marginparwidth=100pt,
-footskip=0.5cm,
-headsep=1cm ]{geometry}
+\\RequirePackage{everysel}
+\\EverySelectfont{%%
+\\fontdimen2\\font=0.4em %% interword space
+\\fontdimen3\\font=0.2em %% interword stretch
+\\fontdimen4\\font=0.1em %% interword shrink
+\\fontdimen7\\font=0.1em %% extra space
+\\hyphenchar\\font=`\\-  %% to allow hyphenation
+}
 
 
+\\usepackage[a4paper,left=15mm,
+top=15mm,headsep=2\\baselineskip,
+textwidth=132mm,marginparsep=8mm,
+marginparwidth=40mm,textheight=49\\baselineskip,
+headheight=\\baselineskip]{geometry}
+
+\\definecolor{halfgray}{gray}{0.75}
 
 %%----------------------------------------------------------------------------------------
 %%	HEADERS
@@ -92,25 +94,21 @@ headsep=1cm ]{geometry}
 \\makeatletter
 
 
-
-
 %% COLOR %<--------------------------------------------------------->%
-\\RequirePackage{xcolor}
 
 %% Main colour
-\\definecolor{sintefblue}{HTML}{003C65}
+\\definecolor{mdblue}{HTML}{003C65}
 
 %% Contrast colours
-\\definecolor{sintefcyan}{HTML}{22A7E5}
-\\definecolor{sintefmagenta}{HTML}{EC008C}
-\\definecolor{sintefgreen}{HTML}{A4C21F}
-\\definecolor{sintefyellow}{HTML}{F7E918}
+\\definecolor{mdcyan}{HTML}{22A7E5}
+\\definecolor{mdmagenta}{HTML}{EC008C}
+\\definecolor{mdgreen}{HTML}{A4C21F}
 
 %% Additional colours
-\\definecolor{sintefgrey}{HTML}{A19589}
-\\colorlet{sintefgray}{sintefgrey}
-\\definecolor{sinteflightgrey}{HTML}{D8D0C7}
-\\colorlet{sinteflightgray}{sinteflightgrey}
+\\definecolor{mdgrey}{HTML}{A19589}
+\\colorlet{mdgray}{mdgrey}
+\\definecolor{mdlightgrey}{HTML}{D8D0C7}
+\\colorlet{mdlightgray}{mdlightgrey}
 
 
 %% DOC %<----------------------------------------------------------->%
@@ -122,29 +120,22 @@ headsep=1cm ]{geometry}
 
 %% Override and use FR instead of FR English if Babel is loaded
 \\DeclareOption{francais}  %%{\\PassOptionsToPackage{french}{babel,datetime2}}
-%%\\DeclareOption{english}    {\\boolfalse{english}}
-%%\\DeclareOption{digital}  {\\booltrue{digitalsignature}}
-%%\\DeclareOption{manual}   {\\boolfalse{digitalsignature}}
-%%\\DeclareOption{twocolumn}{\\OptionNotUsed}
-%%\\DeclareOption*{\\PassOptionsToClass{\\CurrentOption}{scrartcl}}
 \\ProcessOptions\\relax
 
-%% Command to provide alternative translations in English and Norwegian
+%% Command to provide alternative translations in French and English
 \\newcommand{\\FrenchEnglish}[2]{\\ifbool{francais}{#1}{#2}}
 
 %% This} separating line is used across several documents,
 \\newcommand{\\@separator}{%%
- %% To make sure we have spacing on both sides, make an invisible rule, 2X tall
-  \\rule{0ex}{2ex}%%
+\\rule{0ex}{2ex}%%
    %% Place the dashed rule 1X high
-  \\textcolor{sintefgray}{\\rule[1ex]{\\textwidth}{0.25pt}}%%
+  \\textcolor{mdgrey}{\\hdashrule{\\textwidth}{1pt}{2mm 1mm}}%%
 }
-
 
 
 %% LABEL %<-------------------------------------------------------->%
 %% Standard style for labels, small and bold
-\\newcommand{\\@labeltext}{\\scriptsize}
+\\newcommand{\\@labeltext}{\\large\\scshape}
 
 \\newcommand*{\\@absentlabel}{\\FrenchEnglish{ABSENT}{ABSENT}}
 
@@ -416,47 +407,6 @@ headsep=1cm ]{geometry}
 \\newcommand*{\\@tasknumberlabel}{\\#}
 \\newcommand*{\\@tasklabel}{\\FrenchEnglish{TASK}{OPPGAVE}}
 
-\\newcommand*{\\@testdatelabel}{\\FrenchEnglish{TEST DATE}{PRØVEDATO}}
-\\newcommand*{\\@testdate}{\\texttt{\\textbackslash testdate\\{\\}}}
-\\newcommand*{\\testdate}{\\renewcommand*{\\@testdate}}
-
-\\newcommand*{\\@testlocationlabel}{\\FrenchEnglish{TEST LOCATION}{PRØVESTED}}
-\\newcommand*{\\@testlocation}{\\texttt{\\textbackslash testlocation\\{\\}}}
-\\newcommand*{\\testlocation}{\\renewcommand*{\\@testlocation}}
-
-\\newcommand*{\\@testobjectlabel}{\\FrenchEnglish{TEST OBJECT}{PRØVEOBJEKT}}
-\\newcommand*{\\@testobject}{Set with \\texttt{\\textbackslash testobject\\{\\}}}
-\\newcommand*{\\testobject}{\\renewcommand*{\\@testobject}}
-
-\\newcommand*{\\@testprogramlabel}{\\FrenchEnglish{TEST PROGRAM}{PRØVEPROGRAM}}
-\\newcommand*{\\@testprogram}{\\texttt{\\textbackslash testprogram\\{\\}}}
-\\newcommand*{\\testprogram}{\\renewcommand*{\\@testprogram}}
-
-\\newcommand*{\\@timelabel}{\\FrenchEnglish{Time (period/year)}{Tid (periode/år)}}
-
-%% No star for \\@titlefigure, it can expand to multiple lines
-\\newcommand{\\@titlefigure}{Set with \\texttt{\\textbackslash titlefigure\\{\\}}}
-\\newcommand*{\\titlefigure}{\\renewcommand*{\\@titlefigure}}
-
-\\newcommand*{\\@totalexplabel}{\\FrenchEnglish{TOTAL PLANNED\newline EXPENDITURE}
-                                           {ØKONOMISK RAMME\newline TOTAL}}
-\\newcommand*{\\@totalexp}{\\texttt{\\textbackslash totalexp\\{\\}}}
-\\newcommand*{\\totalexp}{\\renewcommand*{\\@totalexp}}
-
-\\newcommand*{\\@totalhrs}{\\texttt{\\textbackslash totalhrs\\{\\}}}
-\\newcommand*{\\totalhrs}{\\renewcommand*{\\@totalhrs}}
-
-\\newcommand*{\\@totallabel}{\\FrenchEnglish{Total}{Total}}
-
-\\newcommand*{\\@unitlabel}{\\FrenchEnglish{SINTEF UNIT}{SINTEF-ENHET}}
-
-\\newcommand*{\\@validitylabel}{\\FrenchEnglish{VALID UNTIL}{GYLDIG TIL}}
-\\newcommand*{\\@validity}{Set with \\texttt{\\textbackslash validity\\{\\}}}
-\\newcommand*{\\validity}{\\renewcommand*{\\@validity}}
-
-\\newcommand*{\\@VATlabel}{\\FrenchEnglish{Enterprise Number}{Foretaksregister}}
-\\newcommand*{\\@VAT}{}
-\\newcommand*{\\vat}[1]{\\renewcommand{\\@VAT}{#1}}
 
 \\newcommand*{\\@versionlabel}{\\FrenchEnglish{VERSION}{VERSJON}}
 \\newcommand*{\\@versiondescriptionlabel}
@@ -485,11 +435,8 @@ headsep=1cm ]{geometry}
 \\ProcessOptions\\relax
 
 \\PassOptionsToPackage{table}{xcolor}
-%%\\LoadClass{sintefdoc}
-
 
 \\renewcommand*{\\@authorlabel}{\\FrenchEnglish{ECRIT PAR}{WRITTEN BY}}
-
 
 %% Setting up header and footer
 \\RequirePackage{nccfancyhdr,lastpage}
@@ -501,8 +448,7 @@ headsep=1cm ]{geometry}
 %% Footer
 \\renewcommand{\\footrulewidth}{0pt}
 \\fancyfoot[c]{%%
-  \\sffamily%%
-  \\color{sintefgray}
+  \\color{mdgray}
   \\@separator\\newline
   ~~%%
   \\begin{minipage}[c]{0.5\\textwidth}
@@ -516,7 +462,6 @@ headsep=1cm ]{geometry}
 }
 
 
-
 %% The logo box.
 \\newcommand{\\@rlogo}{
   \\noindent
@@ -524,7 +469,6 @@ headsep=1cm ]{geometry}
   \\raggedleft
   \\setlength{\\parskip}{1ex}
   \\includegraphics[height=70px]{\\@mainlogo}
-%%\\includegraphics[width=\\textwidth]{\\@mainlogo}
 }
 
 
@@ -565,11 +509,11 @@ headsep=1cm ]{geometry}
 %% Recipient address and information colophon
 \\RequirePackage{colortbl,tabularx,setspace,rotating}
 \\newcommand{\\frontmatter}{%%
-  \\sffamily%%
+  %%\\sffamily%%
   \\noindent%%
   \\begin{minipage}[b]{0.7\\textwidth}
     \\setlength{\\parskip}{2ex}%%
-    \\Huge \\@title
+    \\Huge\\@title
 
     %% ~ ensures \\ does not crash when \@wheremeeting is empty
     \\Large \\@wheremeeting~\\\\\\@whenmeeting
@@ -584,7 +528,7 @@ headsep=1cm ]{geometry}
   \\vspace{4ex}%%
   \\noindent%%
   \\@separator\\\\
-  \\rowcolors{4}{}{sinteflightgray}
+  \\rowcolors{4}{}{mdlightgray}
   \\begin{tabularx}{\\textwidth}{XXccc}
     \\rowcolor{white}
       \\parbox{\\linewidth}{{\\@labeltext \\@initiatorlabel}\\\\\\@initiator}
@@ -600,23 +544,21 @@ headsep=1cm ]{geometry}
   \\rowcolors{1}{}{} %% Back to normal
   \\@separator\\\\
   \\begin{minipage}{0.45\\textwidth}
-    \\@labeltext \\@projectlabel\\\\
+    {\\@labeltext \\@projectlabel}\\\\
     \\@project
   \\end{minipage}
   \\hfill
   \\begin{minipage}{0.3\\textwidth}
-    \\@labeltext \\@datelabel\\\\
+    {\\@labeltext \\@datelabel}\\\\
     \\@date
   \\end{minipage}
   \\begin{minipage}{0.2\\textwidth}
-    \\@labeltext \\@durationlabel\\\\
+    {\\@labeltext \\@durationlabel}\\\\
     \\@duration
   \\end{minipage}\\\\
   \\@separator
   \\noindent
 }
-
-
 
 \\makeatother
 
