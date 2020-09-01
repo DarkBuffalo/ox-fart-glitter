@@ -42,7 +42,7 @@
 
 (add-to-list 'org-latex-classes
              '("fart-glitter"                          ;class-name
-               "\\documentclass{article}
+               "\\documentclass[twoside]{article}
 
 \\usepackage{concmath}
 \\renewcommand*\\familydefault{\\ttdefault} %% Only if the base font of the document is to be typewriter style
@@ -56,6 +56,7 @@
 \\RequirePackage{etoolbox}
 \\RequirePackage[footnote]{snotez}	%% placer les notes de pied de page sur le coté
 \\RequirePackage[toc]{multitoc}
+\\RequirePackage{calc}
 
 \\RequirePackage{everysel}
 \\EverySelectfont{%%
@@ -70,9 +71,8 @@
 \\usepackage[a4paper,left=15mm,
 top=15mm,headsep=2\\baselineskip,
 textwidth=132mm,marginparsep=8mm,
-marginparwidth=40mm,textheight=51\\baselineskip,
+marginparwidth=40mm,textheight=58\\baselineskip,
 headheight=\\baselineskip]{geometry}
-
 
 
 %%------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ headheight=\\baselineskip]{geometry}
 %%------------------------------------------------------------------------------
 
 \\renewcommand{\\sectionmark}[1]{\\markright{\\spacedlowsmallcaps{#1}}} %% The header for all pages (oneside) or for even pages (twoside)
-%%\\renewcommand{\\subsectionmark}[1]{\\markright{\\thesubsection~#1}} %% Uncomment when using the twoside option - this modifies the header on odd pages
+\\renewcommand{\\subsectionmark}[1]{\\markright{\\thesubsection~#1}} %% Uncomment when using the twoside option - this modifies the header on odd pages
 %%\\lehead{\\mbox{\\llap{\\small\\thepage\\kern1em\\color{gray} \\vline}\\color{gray}\\hspace{0.5em}\\rightmark\\hfil}} %% The header style
 
 \\PassOptionsToPackage{protrusion=true,final}{microtype}
@@ -88,8 +88,7 @@ headheight=\\baselineskip]{geometry}
 \\newenvironment{fullpage}
     {\\skip\\noindent\\begin{minipage}
     {\\textwidth+\\marginparwidth+\\marginparsep}\\skip\\smallskip}
-    {\\end{minipage}\\vspace{0.2mm}}
-
+    {\\end{minipage}\\vspace{1mm}}
 \\makeatletter
 
 
@@ -389,8 +388,8 @@ headheight=\\baselineskip]{geometry}
 %% Footer
 \\renewcommand{\\footrulewidth}{0pt}
 \\fancyfoot[c]{%%
-  \\color{dark}
-  \\@separator\\newline
+  \\color{black}
+  \\@separator\\newline\\\\
   ~~%%
   \\begin{minipage}[c]{0.5\\textwidth}
     \\small{\\textbf{\\@projectlabel}}\\newline
@@ -398,7 +397,7 @@ headheight=\\baselineskip]{geometry}
   \\end{minipage}%%
   \\hfill
   \\thepage\\ \\FrenchEnglish{de}{of} \\pageref{LastPage}
-  ~~\\newline
+  %%~~\\newline
   \\@separator
 }
 
@@ -449,15 +448,14 @@ headheight=\\baselineskip]{geometry}
 
 %% Recipient address and information colophon
 \\RequirePackage{colortbl,tabularx,setspace,rotating}
-\\newcommand{\\frontmatter}{%%
+\\renewcommand{\\maketitle}{%%
   %%\\sffamily%%
   \\noindent%%
   \\begin{minipage}[b]{0.7\\textwidth}
     \\setlength{\\parskip}{2ex}%%
     \\Huge\\@title
-
     %% ~ ensures \\ does not crash when \@wheremeeting is empty
-    \\Large \\@wheremeeting~\\\\\\@whenmeeting
+    \\Large\\\\\\@wheremeeting~\\\\\\@whenmeeting
   \\end{minipage}
   \\hfill
   \\begin{minipage}[b]{0.20\\textwidth}
@@ -465,7 +463,6 @@ headheight=\\baselineskip]{geometry}
     \\vspace*{-25pt} %%https://fr.overleaf.com/project/5f2c14ff95d5d40001ccdf96
    \\@rlogo
   \\end{minipage}
-
   \\vspace{1ex}%%
   \\noindent%%
   \\@separator\\\\
@@ -481,15 +478,12 @@ headheight=\\baselineskip]{geometry}
     \\rowcolor{white} \\@labeltext \\@participantslabel\\\\
     \\@participantstable
   \\end{tabularx}
-
   \\rowcolors{1}{}{} %% Back to normal
   \\@separator\\\\
-
   \\begin{minipage}{0.45\\textwidth}
-    \\parbox{{\\@labeltext \\@projectlabel}\\\\
-    \\@project}
+    {\\@labeltext \\@projectlabel}\\\\
+    \\@project
   \\end{minipage}
-
   \\hfill
   \\begin{minipage}{0.3\\textwidth}
     {\\@labeltext \\@datelabel}\\\\
@@ -630,7 +624,7 @@ headheight=\\baselineskip]{geometry}
 "
 \\begin{document}
 \\begin{fullpage}
-\\frontmatter
+\\maketitle
 "(when (plist-get info :with-toc)
    (concat
     (format "\\setcounter{tocdepth}{%d}" (plist-get info :with-toc) )
