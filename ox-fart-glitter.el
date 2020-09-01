@@ -1,4 +1,4 @@
-;;; ox-fart.el --- Export your org file to minutes fart PDF file -*- lexical-binding: t -*-
+;;; ox-fart-glitter.el --- Export your org file to minutes fart PDF file -*- lexical-binding: t -*-
 
 ;; Author: Matthias David <matthias@gnu.re>
 ;; URL: https://github.com/DarkBuffalo/ox-fart
@@ -41,28 +41,20 @@
 
 
 (add-to-list 'org-latex-classes
-             '("fart"                          ;class-name
-               "\\documentclass[twoside,headinclude,footinclude,BCOR=5mm,headings=standardclasses,headings=big]{scrartcl}
+             '("fart-glitter"                          ;class-name
+               "\\documentclass{article}
 
 \\usepackage{concmath}
 \\renewcommand*\\familydefault{\\ttdefault} %% Only if the base font of the document is to be typewriter style
 
 \\RequirePackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
+\\RequirePackage{babel}
+\\RequirePackage{array}
 
-\\RequirePackage[french]{babel}
-\\RequirePackage{setspace}              %%pour le titre
-\\RequirePackage{graphicx}	        %% gestion des images
 \\RequirePackage[dvipsnames,table]{xcolor}	%% gestion des couleurs
-\\RequirePackage{array}		%% gestion améliorée des tableaux
-\\RequirePackage{calc}		        %% syntaxe naturelle pour les calculs
-\\RequirePackage{enumitem}	        %% pour les listes numérotées
+\\RequirePackage{etoolbox}
 \\RequirePackage[footnote]{snotez}	%% placer les notes de pied de page sur le coté
-\\RequirePackage{dashrule}
-
-\\RequirePackage{amsmath,
-	amssymb,
-	amsthm} 			%% For including math equations, theorems, symbols, etc
 \\RequirePackage[toc]{multitoc}
 
 \\RequirePackage{everysel}
@@ -81,15 +73,15 @@ textwidth=132mm,marginparsep=8mm,
 marginparwidth=40mm,textheight=51\\baselineskip,
 headheight=\\baselineskip]{geometry}
 
-\\definecolor{halfgray}{gray}{0.75}
+
 
 %%------------------------------------------------------------------------------
 %%	HEADERS
 %%------------------------------------------------------------------------------
 
 \\renewcommand{\\sectionmark}[1]{\\markright{\\spacedlowsmallcaps{#1}}} %% The header for all pages (oneside) or for even pages (twoside)
-\\renewcommand{\\subsectionmark}[1]{\\markright{\\thesubsection~#1}} %% Uncomment when using the twoside option - this modifies the header on odd pages
-%%\\lehead{\\mbox{\\llap{\\small\\thepage\\kern1em\\color{halfgray} \\vline}\\color{halfgray}\\hspace{0.5em}\\rightmark\\hfil}} %% The header style
+%%\\renewcommand{\\subsectionmark}[1]{\\markright{\\thesubsection~#1}} %% Uncomment when using the twoside option - this modifies the header on odd pages
+%%\\lehead{\\mbox{\\llap{\\small\\thepage\\kern1em\\color{gray} \\vline}\\color{gray}\\hspace{0.5em}\\rightmark\\hfil}} %% The header style
 
 \\PassOptionsToPackage{protrusion=true,final}{microtype}
 
@@ -100,22 +92,6 @@ headheight=\\baselineskip]{geometry}
 
 \\makeatletter
 
-
-%% COLOR %<------------------------------------------------------------------->%
-
-%% Main colour
-\\definecolor{mdblue}{HTML}{003C65}
-
-%% Contrast colours
-\\definecolor{mdcyan}{HTML}{22A7E5}
-\\definecolor{mdmagenta}{HTML}{EC008C}
-\\definecolor{mdgreen}{HTML}{A4C21F}
-
-%% Additional colours
-\\definecolor{mdgrey}{HTML}{A19589}
-\\colorlet{mdgray}{mdgrey}
-\\definecolor{mdlightgrey}{HTML}{D8D0C7}
-\\colorlet{mdlightgray}{mdlightgrey}
 
 
 %% DOC %<--------------------------------------------------------------------->%
@@ -136,7 +112,8 @@ headheight=\\baselineskip]{geometry}
 \\newcommand{\\@separator}{%%
 \\rule{0ex}{2ex}%%
    %% Place the dashed rule 1X high
-  \\textcolor{mdgrey}{\\hdashrule{\\textwidth}{1pt}{2mm 1mm}}%%
+  %%\\textcolor{dark}
+{\\rule{\\textwidth}{1pt}}%%
 }
 
 
@@ -198,47 +175,9 @@ headheight=\\baselineskip]{geometry}
 
 \\newcommand*{\\@classificationlabel}{\\FrenchEnglish{SECRETAIRE}{GRADERING}}
 
-\\newcommand*{\\@clientlabel}{\\FrenchEnglish{CLIENT(S)}{CLIENT(S)}}
-\\newcommand*{\\@client}{Set with \\texttt{\\textbackslash client\\{\\}}}
-\\newcommand*{\\client}{\\renewcommand*{\\@client}}
-
-\\newcommand*{\\@clientreflabel}
-            {\\FrenchEnglish{CLIENT'S REFERENCE}{OPPDRAGSGIVERS REFERANSE}}
-\\newcommand*{\\@clientref}{Set with \\texttt{\\textbackslash clientref\\{\\}}}
-\\newcommand*{\\clientref}{\\renewcommand*{\\@clientref}}
-
-\\newcommand*{\\@clientvat}{Set with \\texttt{\\textbackslash clientvat\\{\\}}}
-\\newcommand*{\\clientvat}{\\renewcommand*{\\@clientvat}}
-
-\\newcommand*{\\@commentslabel}{\\FrenchEnglish{COMMENTS ARE INVITED}{UTTALELSE}}
-
-\\newcommand*{\\@completelabel}{\\FrenchEnglish{COMPLETION YEAR}{SLUTTÅR}}
-\\newcommand*{\\@complete}{\\texttt{\\textbackslash complete\\{\\}}}
-\\newcommand*{\\complete}{\\renewcommand*{\\@complete}}
-
-\\newcommand*{\\@currency}{kNOK}
-\\newcommand*{\\currency}[1]{\\renewcommand{\\@currency}{#1}}
 
 \\newcommand*{\\@datelabel}{\\FrenchEnglish{DATE}{DATE}}
 
-\\newcommand*{\\@datereceivedlabel}
-            {\\FrenchEnglish{TEST OBJECT RECEIVED}{PRØVEOBJEKT MOTTATT}}
-\\newcommand*{\\@datereceived}{Set with \texttt{\textbackslash datereceived\\{\\}}}
-\\newcommand*{\\datereceived}{\\renewcommand*{\\@datereceived}}
-
-\\newcommand*{\\@department}{}
-\\newcommand*{\\department}[1]{\\renewcommand{\\@department}{#1}}
-
-\\newcommand*{\\@directlabel}{\\FrenchEnglish{Direct line}{Direkte innvalg}}
-\\newcommand*{\\@direct}{}
-\\newcommand*{\\direct}[1]{\\renewcommand{\\@direct}{#1}}
-
-\\newcommand*{\\@distributionlabel}{\\FrenchEnglish{DISTRIBUTION}{GÅR TIL}}
-
-\\newcommand*{\\@duelabel}{\\FrenchEnglish{DUE DATE}{FRIST}}
-
-\\newcommand*{\\@elapsedlabel}
-            {\\FrenchEnglish{NUMBER OF HOURS ELAPSED}{MEDGÅTT TID, TIMER}}
 
 \\newcommand*{\\@email}{}
 \\newcommand*{\\email}[1]{\\renewcommand{\\@email}{#1}}
@@ -450,7 +389,7 @@ headheight=\\baselineskip]{geometry}
 %% Footer
 \\renewcommand{\\footrulewidth}{0pt}
 \\fancyfoot[c]{%%
-  \\color{mdgray}
+  \\color{dark}
   \\@separator\\newline
   ~~%%
   \\begin{minipage}[c]{0.5\\textwidth}
@@ -530,7 +469,7 @@ headheight=\\baselineskip]{geometry}
   \\vspace{1ex}%%
   \\noindent%%
   \\@separator\\\\
-  \\rowcolors{4}{}{mdlightgray}
+  \\rowcolors{4}{}{gray}
   \\begin{tabularx}{\\textwidth}{XXccc}
     \\rowcolor{white}
       \\parbox{\\linewidth}{{\\@labeltext \\@initiatorlabel}\\\\\\@initiator}
@@ -545,10 +484,12 @@ headheight=\\baselineskip]{geometry}
 
   \\rowcolors{1}{}{} %% Back to normal
   \\@separator\\\\
+
   \\begin{minipage}{0.45\\textwidth}
-    {\\@labeltext \\@projectlabel}\\\\
-    \\@project
+    \\parbox{{\\@labeltext \\@projectlabel}\\\\
+    \\@project}
   \\end{minipage}
+
   \\hfill
   \\begin{minipage}{0.3\\textwidth}
     {\\@labeltext \\@datelabel}\\\\
@@ -576,12 +517,12 @@ headheight=\\baselineskip]{geometry}
 (defgroup org-export-fart nil
   "Options specific to Fart back-end."
   :tag "Org Fart PDF"
-  :group 'ox-fart)
+  :group 'ox-fart-glitter)
 
 
 (org-export-define-derived-backend 'fart 'latex
   :options-alist
-  '((:latex-class "LATEX_CLASS" nil "fart" t)
+  '((:latex-class "LATEX_CLASS" nil "fart-glitter" t)
     (:present "PRESENT" nil nil)
     (:absent "ABSENT" nil nil)
     (:excuse "EXCUSE" nil nil)
@@ -595,18 +536,18 @@ headheight=\\baselineskip]{geometry}
     (:latex-hyperref-p nil "texht" org-latex-with-hyperref t)
     (:resume "resume" nil nil)
     (:logo "LOGO" nil " "))
-  :translate-alist '((template . ox-fart-template))
+  :translate-alist '((template . ox-fart-glitter-template))
   :menu-entry
-  '(?f "Export to Fart layout"
-       ((?L "As LaTeX buffer" ox-fart-export-as-latex)
-        (?l "As LaTeX file" ox-fart-export-to-latex)
-        (?p "As PDF file" ox-fart-export-to-pdf)
+  '(?g "Export to Fart-glitter layout"
+       ((?L "As LaTeX buffer" ox-fart-glitter-export-as-latex)
+        (?l "As LaTeX file" ox-fart-glitter-export-to-latex)
+        (?p "As PDF file" ox-fart-glitter-export-to-pdf)
         (?o "As PDF and Open"
             (lambda (a s v b)
-              (if a (ox-fart-export-to-pdf t s v b)
-                (org-open-file (ox-fart-export-to-pdf nil s v b))))))))
+              (if a (ox-fart-glitter-export-to-pdf t s v b)
+                (org-open-file (ox-fart-glitter-export-to-pdf nil s v b))))))))
 
-(defun ox-fart-template (contents info)
+(defun ox-fart-glitter-template (contents info)
   "INFO are the header data and CONTENTS is the content of the org file and return complete document string for this export."
   (concat
    ;; Time-stamp.
@@ -702,7 +643,7 @@ headheight=\\baselineskip]{geometry}
 "))))
 
 ;;;###autoload
-(defun ox-fart-export-as-latex
+(defun ox-fart-glitter-export-as-latex
     (&optional async subtreep visible-only body-only ext-plist)
   "Export current buffer as a Fart latex.
 
@@ -728,17 +669,17 @@ EXT-PLIST, when provided, is a proeprty list with external
 parameters overriding Org default settings, but still inferior to
 file-local settings.
 
-Export is done in a buffer named \"*ox-fart Fart Export*\".  It
+Export is done in a buffer named \"*ox-fart-glitter Fart Export*\".  It
 will be displayed if `org-export-show-temporary-export-buffer' is
 non-nil."
   (interactive)
-  (let (ox-fart-special-contents)
+  (let (ox-fart-glitter-special-contents)
     (org-export-to-buffer 'fart "*Org Fart Export*"
       async subtreep visible-only body-only ext-plist
       (lambda () (LaTeX-mode)))))
 
 ;;;###autoload
-(defun ox-fart-export-to-latex
+(defun ox-fart-glitter-export-to-latex
     (&optional async subtreep visible-only body-only ext-plist)
   "Export current buffer as a Fart (tex).
 
@@ -770,12 +711,12 @@ directory.
 Return output file's name."
   (interactive)
   (let ((outfile (org-export-output-file-name ".tex" subtreep))
-        (ox-fart-special-contents))
+        (ox-fart-glitter-special-contents))
     (org-export-to-file 'fart outfile
       async subtreep visible-only body-only ext-plist)))
 
 ;;;###autoload
-(defun ox-fart-export-to-pdf
+(defun ox-fart-glitter-export-to-pdf
     (&optional async subtreep visible-only body-only ext-plist)
   "Export current buffer as a Fart (pdf).
 
@@ -805,13 +746,13 @@ file-local settings.
 Return PDF file's name."
   (interactive)
   (let ((file (org-export-output-file-name ".tex" subtreep))
-	(ox-fart-special-contents))
+	(ox-fart-glitter-special-contents))
     (org-export-to-file 'fart file
       async subtreep visible-only body-only ext-plist
       (lambda (file) (org-latex-compile file)))))
 
 ;;;###autoload
-(defun ox-fart-export-to-pdf-and-open
+(defun ox-fart-glitter-export-to-pdf-and-open
     (&optional async subtreep visible-only body-only ext-plist)
   "Export current buffer as a Fart (pdf) and open.
 If narrowing is active in the current buffer, only export its
@@ -844,5 +785,5 @@ Return PDF file's name."
       async subtreep visible-only body-only ext-plist
       (lambda (file) (org-latex-compile file)))))
 
-(provide 'ox-fart)
-;;; ox-fart.el ends here
+(provide 'ox-fart-glitter)
+;;; ox-fart-glitter.el ends here
