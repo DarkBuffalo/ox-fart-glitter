@@ -43,13 +43,14 @@
 (add-to-list 'org-latex-classes
              '("fart-glitter"                          ;class-name
                "\\documentclass[twoside]{article}
+                [PACKAGES]
+                 [EXTRA]
 
 \\usepackage{concmath}
 \\renewcommand*\\familydefault{\\ttdefault} %% Only if the base font of the document is to be typewriter style
-
 \\RequirePackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
-\\RequirePackage{babel}
+\\RequirePackage[AUTO]{babel}
 \\RequirePackage{array}
 
 \\RequirePackage[dvipsnames,table]{xcolor}	%% gestion des couleurs
@@ -449,7 +450,6 @@ headheight=\\baselineskip]{geometry}
 %% Recipient address and information colophon
 \\RequirePackage{colortbl,tabularx,setspace,rotating}
 \\renewcommand{\\maketitle}{%%
-  %%\\sffamily%%
   \\noindent%%
   \\begin{minipage}[b]{0.7\\textwidth}
     \\setlength{\\parskip}{2ex}%%
@@ -463,17 +463,17 @@ headheight=\\baselineskip]{geometry}
     \\vspace*{-25pt} %%https://fr.overleaf.com/project/5f2c14ff95d5d40001ccdf96
    \\@rlogo
   \\end{minipage}
-  \\vspace{1ex}%%
+  \\vspace{3ex}%%
   \\noindent%%
   \\@separator\\\\
-  \\rowcolors{4}{}{gray}
+  \\rowcolors{4}{}{lightgray}
   \\begin{tabularx}{\\textwidth}{XXccc}
     \\rowcolor{white}
       \\parbox{\\linewidth}{{\\@labeltext \\@initiatorlabel}\\\\\\@initiator}
       & \\parbox{\\linewidth}{{\\@labeltext \\@authorlabel}\\\\\\@author}
-      & \\raisebox{-1cm}{\\begin{sideways}\\parbox{2cm}{\\raggedright\\@labeltext\\@presentlabel}\\end{sideways}}
-      & \\raisebox{-1cm}{\\begin{sideways}\\parbox{2cm}{\\raggedright\\@labeltext\\@absentlabel}\\end{sideways}}
-      & \\raisebox{-1cm}{\\begin{sideways}\\parbox{2cm}{\\raggedright\\@labeltext\\@excusedlabel}\\end{sideways}}\\\\
+      & \\raisebox{-1cm}{\\begin{sideways}\\parbox{1.5cm}{\\raggedright\\@labeltext\\@presentlabel}\\end{sideways}}
+      & \\raisebox{-1cm}{\\begin{sideways}\\parbox{1.5cm}{\\raggedright\\@labeltext\\@absentlabel}\\end{sideways}}
+      & \\raisebox{-1cm}{\\begin{sideways}\\parbox{1.5cm}{\\raggedright\\@labeltext\\@excusedlabel}\\end{sideways}}\\\\
     \\rowcolor{white} \\multicolumn{5}{@{}c@{}}{\\@separator}\\\\
     \\rowcolor{white} \\@labeltext \\@participantslabel\\\\
     \\@participantstable
@@ -514,7 +514,7 @@ headheight=\\baselineskip]{geometry}
   :group 'ox-fart-glitter)
 
 
-(org-export-define-derived-backend 'fart 'latex
+(org-export-define-derived-backend 'fart-glitter 'latex
   :options-alist
   '((:latex-class "LATEX_CLASS" nil "fart-glitter" t)
     (:present "PRESENT" nil nil)
@@ -533,8 +533,7 @@ headheight=\\baselineskip]{geometry}
   :translate-alist '((template . ox-fart-glitter-template))
   :menu-entry
   '(?g "Export to Fart-glitter layout"
-       ((?L "As LaTeX buffer" ox-fart-glitter-export-as-latex)
-        (?l "As LaTeX file" ox-fart-glitter-export-to-latex)
+       ((?l "As LaTeX file" ox-fart-glitter-export-to-latex)
         (?p "As PDF file" ox-fart-glitter-export-to-pdf)
         (?o "As PDF and Open"
             (lambda (a s v b)
@@ -571,11 +570,9 @@ headheight=\\baselineskip]{geometry}
         info)))
 
    ;; Now the core content
-   (let ((toc (plist-get info :with-toc))
-         (from (plist-get info :from))
-         (subject (plist-get info :subject))
-         (fromname (plist-get info :fromname))
-         (cc (plist-get info :cc)))
+   (let ((titre (plist-get info :title))
+         (auteur (plist-get info :author)))
+
      (concat "
 
 
@@ -583,8 +580,8 @@ headheight=\\baselineskip]{geometry}
 "(when (plist-get info :org-latex-with-hyperref)
    (format "{%s}" (plist-get info :org-latex-with-hyperref) ))"
 
-\\author{"(org-export-data (plist-get info :author) info)"}
-\\title{"(org-export-data (plist-get info :title) info)"}
+\\author{"(org-export-data auteur info)"}
+\\title{"(org-export-data titre info)"}
 
 \\wheremeeting{"(when (plist-get info :ou)
    (format "%s" (plist-get info :ou) )) "}
@@ -636,41 +633,6 @@ headheight=\\baselineskip]{geometry}
 \\end{document}
 "))))
 
-;;;###autoload
-(defun ox-fart-glitter-export-as-latex
-    (&optional async subtreep visible-only body-only ext-plist)
-  "Export current buffer as a Fart latex.
-
-If narrowing is active in the current buffer, only export its
-narrowed part.
-
-If a region is active, export that region.
-
-A non-nil optional argument ASYNC means the process should happen
-asynchronously.  The resulting buffer should be accessible
-through the `org-export-stack' interface.
-
-When optional argument SUBTREEP is non-nil, export the sub-tree
-at point, extracting information from the headline properties
-first.
-
-When optional argument VISIBLE-ONLY is non-nil, don't export
-contents of hidden elements.
-
-When optional argument BODY-ONLY is non-nil, only write content.
-
-EXT-PLIST, when provided, is a proeprty list with external
-parameters overriding Org default settings, but still inferior to
-file-local settings.
-
-Export is done in a buffer named \"*ox-fart-glitter Fart Export*\".  It
-will be displayed if `org-export-show-temporary-export-buffer' is
-non-nil."
-  (interactive)
-  (let (ox-fart-glitter-special-contents)
-    (org-export-to-buffer 'fart "*Org Fart Export*"
-      async subtreep visible-only body-only ext-plist
-      (lambda () (LaTeX-mode)))))
 
 ;;;###autoload
 (defun ox-fart-glitter-export-to-latex
@@ -704,9 +666,8 @@ directory.
 
 Return output file's name."
   (interactive)
-  (let ((outfile (org-export-output-file-name ".tex" subtreep))
-        (ox-fart-glitter-special-contents))
-    (org-export-to-file 'fart outfile
+  (let ((outfile (org-export-output-file-name ".tex" subtreep)))
+    (org-export-to-file 'fart-glitter outfile
       async subtreep visible-only body-only ext-plist)))
 
 ;;;###autoload
@@ -739,9 +700,8 @@ file-local settings.
 
 Return PDF file's name."
   (interactive)
-  (let ((file (org-export-output-file-name ".tex" subtreep))
-	(ox-fart-glitter-special-contents))
-    (org-export-to-file 'fart file
+  (let ((file (org-export-output-file-name ".tex" subtreep)))
+    (org-export-to-file 'fart-glitter file
       async subtreep visible-only body-only ext-plist
       (lambda (file) (org-latex-compile file)))))
 
@@ -775,7 +735,7 @@ file-local settings.
 Return PDF file's name."
   (interactive)
   (let ((outfile (org-export-output-file-name ".tex" subtreep)))
-    (org-export-to-file 'fart outfile
+    (org-export-to-file 'fart-glitter outfile
       async subtreep visible-only body-only ext-plist
       (lambda (file) (org-latex-compile file)))))
 
