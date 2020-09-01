@@ -182,19 +182,6 @@ headheight=\\baselineskip]{geometry}
 \\newcommand*{\\@email}{}
 \\newcommand*{\\email}[1]{\\renewcommand{\\@email}{#1}}
 
-\\newcommand*{\\@enclosurelabel}{\\FrenchEnglish{ENCLOSURE}{BILAG}}
-
-\\newcommand*{\\@expenditurelabel}{\\FrenchEnglish{EXPENDITURE}{MEDGÅTTE KOSTNADER}}
-\\newcommand*{\\@expshortlabel}{\\FrenchEnglish{Expenditure}{Kostnader}}
-
-\\newcommand*{\\@faxlabel}{\\FrenchEnglish{Telefax}{Telefaks}}
-\\newcommand*{\\@fax}{}
-\\newcommand*{\\fax}[1]{\\renewcommand{\\@fax}{#1}}
-
-\\newcommand*{\\@faxnumberlabel}{\\FrenchEnglish{FAX NUMBER}{TELEFAKSNUMMER}}
-\\newcommand*{\\@faxnumber}{Set with \\texttt{\\textbackslash faxnumber\\{\\}}}
-\\newcommand*{\\faxnumber}{\\renewcommand*{\\@faxnumber}}
-
 \\newcommand*{\\@firstexplabel}
             {\\FrenchEnglish{PLANNED EXPENDITURE\newline
                            FOR 1\\textsuperscript{st} YEAR}
@@ -203,8 +190,6 @@ headheight=\\baselineskip]{geometry}
 \\newcommand*{\\firstexp}{\\renewcommand*{\\@firstexp}}
 
 \\newcommand*{\\@fromlabel}{\\FrenchEnglish{DE}{FROM}}
-
-\\newcommand*{\\@historylabel}{\\FrenchEnglish{Document History}{Historikk}}
 
 \\newcommand*{\\@excusedlabel}{\\FrenchEnglish{EXCUSE}{EXCUSE}}
 
@@ -219,8 +204,6 @@ headheight=\\baselineskip]{geometry}
 \\newcommand*{\\@institute}{}
 \\newcommand*{\\institute}[1]{\\renewcommand{\\@institute}{#1}}
 
-\\newcommand*{\\@ISBN}{Set with \\texttt{\\textbackslash isbn\\{\\}}}
-\\newcommand*{\\isbn}{\\renewcommand*{\\@ISBN}}
 
 \\newcommand*{\\@keywordlabel}{\\FrenchEnglish{MOTS CLES}{KEYWORDS}}
 %% No star for \\@keywords, it can expand to multiple lines
@@ -239,12 +222,6 @@ headheight=\\baselineskip]{geometry}
 \\newcommand*{\\@location}{}
 \\newcommand*{\\location}[1]{\\renewcommand{\\@location}{#1}}
 
-\\newcommand*{\\@managerlabel}{\\FrenchEnglish{PROJECT MANAGER}{PROSJEKTLEDER}}
-\\newcommand*{\\@manager}{Set with \\texttt{\\textbackslash manager\\{\\}}}
-\\newcommand*{\\manager}{\\renewcommand*{\\@manager}}
-
-\\newcommand*{\\@motto}{\\FrenchEnglish{Technology for a better society}
-                                   {Teknologi for et bedre samfunn}}
 
 \\newcommand*{\\name}{\\def\\fromname}
 \\name{Set with \\texttt{\\textbackslash name\\{\\}}}
@@ -481,8 +458,8 @@ headheight=\\baselineskip]{geometry}
   \\rowcolors{1}{}{} %% Back to normal
   \\@separator\\\\
   \\begin{minipage}{0.45\\textwidth}
-    {\\@labeltext \\@projectlabel}\\\\
-    \\@project
+   \\hspace*{\\tabcolsep}\\@labeltext\\@projectlabel\\\\
+   \\hspace*{\\tabcolsep}\\@project
   \\end{minipage}
   \\hfill
   \\begin{minipage}{0.3\\textwidth}
@@ -572,12 +549,10 @@ headheight=\\baselineskip]{geometry}
    ;; Now the core content
    (let ((titre (plist-get info :title))
          (auteur (plist-get info :author)))
-
      (concat "
 
-
-
-"(when (plist-get info :org-latex-with-hyperref)
+"
+             (when (plist-get info :org-latex-with-hyperref)
    (format "{%s}" (plist-get info :org-latex-with-hyperref) ))"
 
 \\author{"(org-export-data auteur info)"}
