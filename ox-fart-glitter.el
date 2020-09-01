@@ -48,6 +48,7 @@
 
 \\usepackage{concmath}
 \\renewcommand*\\familydefault{\\ttdefault} %% Only if the base font of the document is to be typewriter style
+
 \\RequirePackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
 \\RequirePackage[AUTO]{babel}
@@ -82,7 +83,7 @@ headheight=\\baselineskip]{geometry}
 
 \\renewcommand{\\sectionmark}[1]{\\markright{\\spacedlowsmallcaps{#1}}} %% The header for all pages (oneside) or for even pages (twoside)
 \\renewcommand{\\subsectionmark}[1]{\\markright{\\thesubsection~#1}} %% Uncomment when using the twoside option - this modifies the header on odd pages
-%%\\lehead{\\mbox{\\llap{\\small\\thepage\\kern1em\\color{gray} \\vline}\\color{gray}\\hspace{0.5em}\\rightmark\\hfil}} %% The header style
+%%\\lehead{\\mbox{\\llap{\\small\\thepage\\kern1em\\color{lightgray} \\vline}\\color{lightgray}\\hspace{0.5em}\\rightmark\\hfil}} %% The header style
 
 \\PassOptionsToPackage{protrusion=true,final}{microtype}
 
@@ -112,8 +113,7 @@ headheight=\\baselineskip]{geometry}
 \\newcommand{\\@separator}{%%
 \\rule{0ex}{2ex}%%
    %% Place the dashed rule 1X high
-  %%\\textcolor{dark}
-{\\rule{\\textwidth}{1pt}}%%
+  \\textcolor{lightgray}{\\rule{\\textwidth}{1pt}}%%
 }
 
 
@@ -366,7 +366,7 @@ headheight=\\baselineskip]{geometry}
 %% Footer
 \\renewcommand{\\footrulewidth}{0pt}
 \\fancyfoot[c]{%%
-  \\color{black}
+  \\color{gray}
   \\@separator\\newline\\\\
   ~~%%
   \\begin{minipage}[c]{0.5\\textwidth}

@@ -1,8 +1,6 @@
-#+title:OX-REPORT
+#+title:OX-FART-GLITTER
 #+author: Matthias David
 
-#+attr_latex: :width 150px
-[[file:img/report.png]]
 
 #+caption: Export
 #+attr_latex: :width 300px
@@ -14,14 +12,14 @@
 If you use =use-package=, you can do the below instead:
 
 #+BEGIN_SRC emacs-lisp
-(use-package ox-report
-  :load-path "~/Dropbox/emacs/lib/ox-report")
+(use-package ox-fart-glitter
+  :load-path "~/Dropbox/emacs/lib/ox-fart-glitter")
 #+END_SRC
 
 If you use Doom Emacs
 #+BEGIN_SRC emacs-lisp
-(package! ox-report
-  :recipe (:host github :repo "DarkBuffalo/ox-report"))
+(package! ox-fart-glitter
+  :recipe (:host github :repo "DarkBuffalo/ox-fart-glitter"))
 #+END_SRC
 
 * PREREQUISITES
@@ -35,7 +33,7 @@ If you use Doom Emacs
   - pgf
   - marginnote
   - xpatch
-  - classicthesis
+
   - bera
   - eulervm
   - mparhack
@@ -56,14 +54,14 @@ If you use Doom Emacs
   - babel-french
 
 * USAGE
-- =C-c C-e r o= :: Export as PDF and Open
+- =C-c C-e g o= :: Export as PDF and Open
 
 
 * CONFIGURATION
 To configure the export we use the header of the org file
 ** standard
 #+BEGIN_SRC org
-#+title:Readme ox-report
+#+title:Readme ox-fart-glitter
 #+author: Matthias David
 #+options: toc:nil
 #+END_SRC
@@ -148,7 +146,7 @@ it is necessary to separate the names by commas for a good formatting
 
 * CONTRIBUTING
 
-1. Fork it (<https://github.com/DarkBuffalo/ox-report/fork>)
+1. Fork it (https://github.com/DarkBuffalo/ox-fart-glitter/fork)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
